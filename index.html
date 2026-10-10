@@ -76,13 +76,13 @@
 
 <section id="about" class="about">
   <p class="eyebrow">ABOUT THE DATABASE</p>
-  <h2>Built around NZ fleet spotting</h2>
-  <p>This project is focused on New Zealand rather than broad Australian fleet lists. The database records things that are useful to a fleet enthusiast: fleet numbers, vehicle types, destination displays, liveries, refurbishments, loans and demonstrators.</p>
+  <h2>Created by a New Zealand transit enthusiast</h2>
+  <p>This database was created by <strong>Christian Yeung</strong>, a New Zealand transit enthusiast with a passion for buses, trains and fleet research. It brings information about New Zealand's public transport fleets together in one place, including fleet numbers, vehicle types, operators, destination displays, liveries, refurbishments, loans and demonstrators.</p>
   <div class="feature-grid">
-    <div><span class="icon">🚌</span><b>Fleet numbers</b><small>Quickly search vehicles such as HE, GB, RT and AM units.</small></div>
-    <div><span class="icon">🖥️</span><b>Displays</b><small>Track Hanover and Mobitec display observations.</small></div>
-    <div><span class="icon">📷</span><b>Vehicle types</b><small>Use images and type cards as a visual reference.</small></div>
-    <div><span class="icon">📝</span><b>Research notes</b><small>Keep special fleet observations organised.</small></div>
+    <div><span class="icon">🚌</span><b>Bus fleets</b><small>Explore operators, fleet numbers, vehicle models and bus fleet information.</small></div>
+    <div><span class="icon">🚆</span><b>Railway fleets</b><small>Find information about locomotives, passenger trains and AM-class units.</small></div>
+    <div><span class="icon">🖥️</span><b>Fleet details</b><small>Browse Hanover and Mobitec displays, liveries and vehicle changes.</small></div>
+    <div><span class="icon">📝</span><b>Request a change</b><small>Found an error or have new information? Use a vehicle's change-request link to suggest an update.</small></div>
   </div>
 </section>
 </main>
@@ -149,7 +149,10 @@ function render() {
         <h3>${r.category}</h3>
         ${r.detail ? `<p>${r.detail}</p>` : ''}
       </div>
-      <span class="tag">${type}</span>
+      <div class="record-actions">
+        <span class="tag">${type}</span>
+        <a class="change-request" href="request.html?fleet=${encodeURIComponent(r.fleet)}&category=${encodeURIComponent(r.category)}">✉ Change request</a>
+      </div>
     </article>`;
   }).join('');
   noResults.hidden = filtered.length !== 0;
