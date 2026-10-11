@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,129 +12,334 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
+    :root {
+      --contact-ink: #172a34;
+      --contact-teal: #087e91;
+      --contact-teal-dark: #075361;
+      --contact-bg: #f2f7f8;
+      --contact-border: #d7e3e8;
+      --contact-muted: #647986;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--contact-bg);
+      color: var(--contact-ink);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .contact-topbar {
+      width: 100%;
+      min-height: 43px;
+      background: var(--contact-teal-dark);
+      color: #fff;
+    }
+
+    .contact-nav {
+      width: min(100% - 36px, 960px);
+      min-height: 43px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .contact-brand {
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .contact-navlinks {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+    }
+
+    .contact-navlinks a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    .contact-navlinks a:hover,
+    .contact-brand:hover {
+      text-decoration: underline;
+    }
+
     .contact-page {
-      max-width: 850px;
-      margin: 40px auto;
-      padding: 24px;
+      width: min(100% - 32px, 450px);
+      margin: 25px auto 28px;
     }
 
-    .contact-intro {
-      margin-bottom: 28px;
-      line-height: 1.7;
+    .back-link {
+      display: inline-block;
+      margin: 0 0 17px;
+      color: #075d79;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
     }
 
-    .contact-form-card {
-      padding: 28px;
-      border: 1px solid var(--border-color, #dddddd);
-      border-radius: 16px;
-      background: var(--card-background, #ffffff);
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .contact-card {
+      padding: 25px 24px 24px;
+      border: 1px solid var(--contact-border);
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 8px 22px rgba(20, 49, 59, 0.06);
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #718895;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 5px;
+      color: var(--contact-ink);
+      font-size: 29px;
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .intro {
+      margin: 0 0 12px;
+      color: #405560;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .info-note {
+      margin: 0 0 18px;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #edf6f8;
+      color: #425d68;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      color: var(--contact-ink);
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: -0.4px;
     }
 
     .contact-form {
       display: grid;
-      gap: 18px;
+      gap: 12px;
     }
 
     .form-field {
       display: grid;
-      gap: 8px;
+      gap: 5px;
+      min-width: 0;
     }
 
     .form-field label {
-      font-weight: 600;
+      color: #1d303a;
+      font-size: 11px;
+      font-weight: 700;
     }
 
     .form-field input,
     .form-field select,
     .form-field textarea {
+      display: block;
       width: 100%;
-      box-sizing: border-box;
-      padding: 12px 14px;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
+      min-width: 0;
+      padding: 10px 11px;
+      border: 1px solid #cedde5;
+      border-radius: 6px;
+      background: #fff;
+      color: #243640;
       font: inherit;
-      background: #ffffff;
-      color: #172033;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .form-field input,
+    .form-field select {
+      min-height: 38px;
     }
 
     .form-field textarea {
-      min-height: 150px;
+      min-height: 105px;
       resize: vertical;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: #89969e;
+      opacity: 1;
     }
 
     .form-field input:focus,
     .form-field select:focus,
     .form-field textarea:focus {
-      outline: 2px solid #2563eb;
-      outline-offset: 2px;
+      outline: 2px solid rgba(8, 126, 145, 0.2);
+      border-color: var(--contact-teal);
     }
 
-    .form-help,
-    .form-note {
-      font-size: 0.9rem;
-      line-height: 1.6;
-      opacity: 0.8;
+    .form-help {
+      color: var(--contact-muted);
+      font-size: 10px;
+      line-height: 1.5;
     }
 
     .submit-button {
-      padding: 13px 20px;
-      border: none;
-      border-radius: 9px;
-      background: #174ea6;
-      color: white;
-      font: inherit;
+      width: fit-content;
+      min-height: 36px;
+      padding: 9px 14px;
+      border: 0;
+      border-radius: 6px;
+      background: var(--contact-teal);
+      color: #fff;
+      font-size: 11px;
       font-weight: 700;
       cursor: pointer;
+      transition: background 0.15s ease;
     }
 
     .submit-button:hover {
-      background: #123e85;
+      background: #066879;
     }
 
-    .back-link {
-      display: inline-block;
-      margin-bottom: 20px;
+    .submit-button:focus-visible {
+      outline: 2px solid var(--contact-teal);
+      outline-offset: 3px;
     }
 
-    @media (max-width: 600px) {
-      .contact-page {
-        margin: 20px auto;
-        padding: 16px;
+    .form-note {
+      margin: 2px 0 0;
+      padding: 11px 12px;
+      border-radius: 6px;
+      background: #edf6f8;
+      color: #526b75;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
+    .contact-footer {
+      width: 100%;
+      margin-top: 28px;
+      padding: 17px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #08252d;
+      color: #eaf2f4;
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .footer-title {
+      font-weight: 700;
+    }
+
+    .footer-credit {
+      color: #d1dfe3;
+    }
+
+    .contact-footer a {
+      color: #56d3dc;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 520px) {
+      .contact-nav {
+        width: calc(100% - 24px);
       }
 
-      .contact-form-card {
-        padding: 20px;
+      .contact-brand {
+        max-width: 170px;
+        font-size: 11px;
+      }
+
+      .contact-navlinks {
+        gap: 12px;
+      }
+
+      .contact-navlinks a {
+        font-size: 10px;
+      }
+
+      .contact-page {
+        width: calc(100% - 24px);
+        margin-top: 18px;
+      }
+
+      .contact-card {
+        padding: 21px 17px;
+      }
+
+      h1 {
+        font-size: 27px;
+      }
+
+      .contact-footer {
+        flex-direction: column;
+        gap: 7px;
       }
     }
   </style>
 </head>
 
 <body>
+  <header class="contact-topbar">
+    <nav class="contact-nav">
+      <a class="contact-brand" href="index.html">
+        NZ Bus &amp; Train Fleet Database
+      </a>
+
+      <div class="contact-navlinks">
+        <a href="index.html#database">Fleet database</a>
+        <a href="index.html#about">About</a>
+      </div>
+    </nav>
+  </header>
+
   <main class="contact-page">
     <a class="back-link" href="index.html">
-      ← Back to the fleet database
+      ← Back to fleet database
     </a>
 
-    <header class="contact-intro">
-      <p class="eyebrow">FLEET RECORD FEEDBACK &amp; ENQUIRIES</p>
+    <section class="contact-card">
+      <p class="eyebrow">FLEET RECORD FEEDBACK</p>
+
       <h1>Contact us</h1>
 
-      <p>
-        Have you spotted an error in the database, discovered new
-        information about a vehicle, or got a question about the
-        website? I'd be happy to hear from you.
+      <p class="intro">
+        Spotted an error or have new information about a vehicle?
+        Send a message using the form below. Questions and website
+        suggestions are welcome too.
       </p>
 
-      <p>
-        For vehicle-related changes, please include the fleet number
-        and explain what needs to be corrected or updated. Providing
-        a reliable source or photo reference is appreciated and helps
-        verify the information.
+      <p class="info-note">
+        Please include the fleet number for vehicle-related enquiries
+        and, if possible, a source or photo reference to help verify
+        the information.
       </p>
-    </header>
 
-    <section class="contact-form-card">
       <h2>Send a message</h2>
 
       <form
@@ -144,6 +349,7 @@
       >
         <div class="form-field">
           <label for="request-type">Type of request *</label>
+
           <select id="request-type" name="Request type" required>
             <option value="">Select an option</option>
             <option value="Correct existing information">
@@ -155,20 +361,28 @@
             <option value="Remove an incorrect record">
               Remove an incorrect record
             </option>
-            <option value="General enquiry">General enquiry</option>
-            <option value="Website feedback">Website feedback</option>
-            <option value="Other suggestion">Other suggestion</option>
+            <option value="General enquiry">
+              General enquiry
+            </option>
+            <option value="Website feedback">
+              Website feedback
+            </option>
+            <option value="Other suggestion">
+              Other suggestion
+            </option>
           </select>
         </div>
 
         <div class="form-field">
           <label for="fleet-number">Fleet number (optional)</label>
+
           <input
             type="text"
             id="fleet-number"
             name="Fleet number"
             placeholder="e.g. HE219, GB5215 or AM class"
           >
+
           <span class="form-help">
             If your message concerns a particular vehicle, enter its
             fleet number here.
@@ -177,6 +391,7 @@
 
         <div class="form-field">
           <label for="name">Your name (optional)</label>
+
           <input
             type="text"
             id="name"
@@ -188,6 +403,7 @@
 
         <div class="form-field">
           <label for="email">Your email (optional)</label>
+
           <input
             type="email"
             id="email"
@@ -195,6 +411,7 @@
             autocomplete="email"
             placeholder="you@example.com"
           >
+
           <span class="form-help">
             Include your email if you would like a reply.
           </span>
@@ -202,6 +419,7 @@
 
         <div class="form-field">
           <label for="message">Describe your request *</label>
+
           <textarea
             id="message"
             name="Message"
@@ -212,12 +430,14 @@
 
         <div class="form-field">
           <label for="evidence">Evidence or source link (optional)</label>
+
           <input
             type="url"
             id="evidence"
             name="Evidence or source link"
             placeholder="https://..."
           >
+
           <span class="form-help">
             You can include a relevant webpage or a link to a photo.
           </span>
@@ -229,20 +449,23 @@
 
         <p class="form-note">
           Your message will be submitted through Formspree.
-          Please check that your details are correct before submitting.
+          Please check your details before submitting.
         </p>
       </form>
     </section>
 
-    <footer style="text-align: center; margin-top: 32px;">
-      <p>
+    <footer class="contact-footer">
+      <span class="footer-title">
         New Zealand Bus &amp; Train Fleet Database
-      </p>
-      <p>
+      </span>
+
+      <span class="footer-credit">
         Created by Christian Yeung, an Auckland-based transit enthusiast.
-      </p>
-      <a href="index.html">Return to the database</a>
+      </span>
+
+      <a href="index.html">Return to database</a>
     </footer>
   </main>
 </body>
 </html>
+```
