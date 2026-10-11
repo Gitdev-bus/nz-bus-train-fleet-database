@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Request a Fleet Record Change | NZ Bus & Train Fleet Database</title>
+<title>Request a Fleet Record Change | NZ Bus &amp; Train Fleet Database</title>
 <link rel="stylesheet" href="style.css">
 
 <style>
@@ -123,12 +123,11 @@
 
 <main class="request-shell">
 
-  <a class="back-link" href="index.html#database">
+  <a class="back-link" href="index.html#database" id="backToDatabase">
     ← Back to fleet database
   </a>
 
   <section class="request-card">
-
     <p class="eyebrow">FLEET RECORD FEEDBACK</p>
 
     <h1>Request a change</h1>
@@ -150,18 +149,13 @@
       action="https://formspree.io/f/xrpekoly"
       method="POST"
     >
-
       <input
         type="hidden"
         name="_subject"
-        value="NZ Bus & Train Fleet Database — Change Request"
+        value="NZ Bus &amp; Train Fleet Database — Change Request"
       >
 
-      <input
-        type="hidden"
-        name="_replyto"
-        id="replyTo"
-      >
+      <input type="hidden" name="_replyto" id="replyTo">
 
       <label for="fleetNumber">Fleet number</label>
       <input
@@ -182,18 +176,10 @@
 
       <label for="changeType">What should be changed?</label>
       <select id="changeType" name="changeType" required>
-        <option value="Correct existing information">
-          Correct existing information
-        </option>
-        <option value="Add new information">
-          Add new information
-        </option>
-        <option value="Remove an incorrect record">
-          Remove an incorrect record
-        </option>
-        <option value="Other suggestion">
-          Other suggestion
-        </option>
+        <option value="Correct existing information">Correct existing information</option>
+        <option value="Add new information">Add new information</option>
+        <option value="Remove an incorrect record">Remove an incorrect record</option>
+        <option value="Other suggestion">Other suggestion</option>
       </select>
 
       <label for="message">Describe the requested change</label>
@@ -230,7 +216,6 @@
         Your request will be submitted through our form service.
         Please check your details before submitting.
       </p>
-
     </form>
   </section>
 </main>
@@ -244,23 +229,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("requestForm");
   const senderEmail = document.getElementById("senderEmail");
   const replyTo = document.getElementById("replyTo");
+  const backLink = document.getElementById("backToDatabase");
 
-  // Automatically fill in the vehicle from its individual link.
+  // Fill in the selected vehicle.
   fleetInput.value = params.get("fleet") || "";
   categoryInput.value = params.get("category") || "";
 
-  // Require a valid vehicle link before a request can be submitted.
+  // Prevent submitting the form without a vehicle selected.
   if (!fleetInput.value.trim()) {
     fleetInput.setCustomValidity(
-      "Please open this form using the Request a change link on a vehicle."
+      "Please open this form using a vehicle's Request a change link."
     );
   }
 
-  fleetInput.addEventListener("input", function () {
-    fleetInput.setCustomValidity("");
+  // Return to the previous database page and restore its scroll position.
+  backLink.addEventListener("click", function (event) {
+    const referrer = document.referrer;
+    const sameSite =
+      referrer && new URL(referrer).origin === window.location.origin;
+    const cameFromDatabase =
+      sameSite && new URL(referrer).pathname.endsWith("/index.html");
+
+    if (cameFromDatabase && window.history.length > 1) {
+      event.preventDefault();
+      window.history.back();
+    }
   });
 
-  // Allow replies to go to the optional email entered by the user.
+  // Include the optional email as the reply-to address.
   form.addEventListener("submit", function () {
     replyTo.value = senderEmail.value.trim();
   });
