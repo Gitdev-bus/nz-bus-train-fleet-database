@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contact Us | NZ Bus & Train Fleet Database</title>
+  <meta name="description" content="Contact the New Zealand Bus & Train Fleet Database to submit fleet information, corrections, suggestions or general enquiries.">
+
+  <link rel="icon" type="image/jpeg" href="z_bus_train_fleet_database_logo_under_1mb.jpg">
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .contact-page {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 24px;
+    }
+
+    .contact-intro {
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .contact-form-card {
+      padding: 28px;
+      border: 1px solid var(--border-color, #dddddd);
+      border-radius: 16px;
+      background: var(--card-background, #ffffff);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .contact-form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .form-field label {
+      font-weight: 600;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 9px;
+      font: inherit;
+      background: #ffffff;
+      color: #172033;
+    }
+
+    .form-field textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-field input:focus,
+    .form-field select:focus,
+    .form-field textarea:focus {
+      outline: 2px solid #2563eb;
+      outline-offset: 2px;
+    }
+
+    .form-help,
+    .form-note {
+      font-size: 0.9rem;
+      line-height: 1.6;
+      opacity: 0.8;
+    }
+
+    .submit-button {
+      padding: 13px 20px;
+      border: none;
+      border-radius: 9px;
+      background: #174ea6;
+      color: white;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .submit-button:hover {
+      background: #123e85;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .contact-page {
+        margin: 20px auto;
+        padding: 16px;
+      }
+
+      .contact-form-card {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="contact-page">
+    <a class="back-link" href="index.html">
+      ← Back to the fleet database
+    </a>
+
+    <header class="contact-intro">
+      <p class="eyebrow">FLEET RECORD FEEDBACK &amp; ENQUIRIES</p>
+      <h1>Contact us</h1>
+
+      <p>
+        Have you spotted an error in the database, discovered new
+        information about a vehicle, or got a question about the
+        website? I'd be happy to hear from you.
+      </p>
+
+      <p>
+        For vehicle-related changes, please include the fleet number
+        and explain what needs to be corrected or updated. Providing
+        a reliable source or photo reference is appreciated and helps
+        verify the information.
+      </p>
+    </header>
+
+    <section class="contact-form-card">
+      <h2>Send a message</h2>
+
+      <form
+        class="contact-form"
+        action="https://formspree.io/f/xkjobkwg"
+        method="POST"
+      >
+        <div class="form-field">
+          <label for="request-type">Type of request *</label>
+          <select id="request-type" name="Request type" required>
+            <option value="">Select an option</option>
+            <option value="Correct existing information">
+              Correct existing information
+            </option>
+            <option value="Add new information">
+              Add new information
+            </option>
+            <option value="Remove an incorrect record">
+              Remove an incorrect record
+            </option>
+            <option value="General enquiry">General enquiry</option>
+            <option value="Website feedback">Website feedback</option>
+            <option value="Other suggestion">Other suggestion</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="fleet-number">Fleet number (optional)</label>
+          <input
+            type="text"
+            id="fleet-number"
+            name="Fleet number"
+            placeholder="e.g. HE219, GB5215 or AM class"
+          >
+          <span class="form-help">
+            If your message concerns a particular vehicle, enter its
+            fleet number here.
+          </span>
+        </div>
+
+        <div class="form-field">
+          <label for="name">Your name (optional)</label>
+          <input
+            type="text"
+            id="name"
+            name="Name"
+            autocomplete="name"
+            placeholder="Enter your name"
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="email">Your email (optional)</label>
+          <input
+            type="email"
+            id="email"
+            name="Email"
+            autocomplete="email"
+            placeholder="you@example.com"
+          >
+          <span class="form-help">
+            Include your email if you would like a reply.
+          </span>
+        </div>
+
+        <div class="form-field">
+          <label for="message">Describe your request *</label>
+          <textarea
+            id="message"
+            name="Message"
+            required
+            placeholder="Explain your correction, new information, question or suggestion..."
+          ></textarea>
+        </div>
+
+        <div class="form-field">
+          <label for="evidence">Evidence or source link (optional)</label>
+          <input
+            type="url"
+            id="evidence"
+            name="Evidence or source link"
+            placeholder="https://..."
+          >
+          <span class="form-help">
+            You can include a relevant webpage or a link to a photo.
+          </span>
+        </div>
+
+        <button class="submit-button" type="submit">
+          Submit request
+        </button>
+
+        <p class="form-note">
+          Your message will be submitted through Formspree.
+          Please check that your details are correct before submitting.
+        </p>
+      </form>
+    </section>
+
+    <footer style="text-align: center; margin-top: 32px;">
+      <p>
+        New Zealand Bus &amp; Train Fleet Database
+      </p>
+      <p>
+        Created by Christian Yeung, an Auckland-based transit enthusiast.
+      </p>
+      <a href="index.html">Return to the database</a>
+    </footer>
+  </main>
+</body>
+</html>
