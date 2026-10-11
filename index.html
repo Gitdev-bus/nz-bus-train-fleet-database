@@ -468,61 +468,32 @@ render();
 (function () {
   const STORAGE_KEY = "nzFleetDatabaseScrollY";
 
-  function saveScrollPosition() {
-    try {
-      sessionStorage.setItem(
-        STORAGE_KEY,
-        String(window.scrollY)
-      );
-    } catch (error) {
-      // Keep the page usable if storage is unavailable.
-    }
+  // Restore the previous scroll position before the page is shown, if possible.
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "auto";
   }
 
-  // Remember the scroll position as the user moves down the page.
-  window.addEventListener("scroll", saveScrollPosition, {
-    passive: true
-  });
+  // Save the position as the user scrolls.
+  window.addEventListener("scroll", function () {
+    sessionStorage.setItem(STORAGE_KEY, String(window.scrollY));
+  }, { passive: true });
 
-  // Save the position when a vehicle change-request link is clicked.
+  // Save the position when opening a change request.
   document.addEventListener("click", function (event) {
-    if (!(event.target instanceof Element)) return;
+    const target = event.target;
 
-    const link = event.target.closest("a.change-request");
+    if (!(target instanceof Element)) return;
+
+    const link = target.closest("a.change-request");
 
     if (link) {
-      saveScrollPosition();
+      sessionStorage.setItem(STORAGE_KEY, String(window.scrollY));
     }
   });
 
-  // Save the final position when navigating away.
-  window.addEventListener("pagehide", saveScrollPosition);
-
-  // Prevent the browser's automatic restoration from conflicting.
-  if ("scrollRestoration" in history) {
-    history.scrollRestoration = "manual";
-  }
-
-  // Restore the previous scroll position instead of jumping to the top.
-  window.addEventListener("pageshow", function () {
-    let savedPosition;
-
-    try {
-      savedPosition = sessionStorage.getItem(STORAGE_KEY);
-    } catch (error) {
-      return;
-    }
-
-    if (savedPosition === null) return;
-
-    const position = Number(savedPosition);
-    if (!Number.isFinite(position)) return;
-
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        window.scrollTo(0, position);
-      });
-    });
+  // Save the position when navigating away.
+  window.addEventListener("pagehide", function () {
+    sessionStorage.setItem(STORAGE_KEY, String(window.scrollY));
   });
 })();
 </script>
