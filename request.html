@@ -1,4 +1,7 @@
 
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -181,3 +184,185 @@
     }
   </style>
 </head>
+
+<body>
+
+<header class="hero">
+  <nav class="nav">
+    <a class="brand" href="index.html">
+      NZ Bus &amp; Train Fleet Database
+    </a>
+
+    <div class="navlinks">
+      <a href="index.html#database">Fleet database</a>
+      <a href="index.html#about">About</a>
+    </div>
+  </nav>
+</header>
+
+<main class="request-shell">
+
+  <a class="back-link" href="index.html#database" id="backToDatabase">
+    &larr; Back to fleet database
+  </a>
+
+  <section class="request-card">
+    <h1>Request a change</h1>
+
+    <p>
+      Spotted an error or have new information about a vehicle?
+      Submit a change request using the form below.
+      The selected vehicle's details will be filled in automatically.
+    </p>
+
+    <p class="notice">
+      Please include accurate information and, if possible,
+      a source or photo reference to help verify the change.
+    </p>
+
+    <form
+      id="requestForm"
+      class="request-form"
+      action="https://formspree.io/f/xrpekoly"
+      method="POST"
+    >
+      <input
+        type="hidden"
+        name="_subject"
+        value="NZ Bus &amp; Train Fleet Database — Change Request"
+      >
+
+      <input type="hidden" name="_replyto" id="replyTo">
+
+      <label for="fleetNumber">
+        Fleet number
+        <input
+          type="text"
+          id="fleetNumber"
+          name="fleet"
+          readonly
+          required
+        >
+      </label>
+
+      <label for="currentCategory">
+        Current category
+        <input
+          type="text"
+          id="currentCategory"
+          name="category"
+          readonly
+        >
+      </label>
+
+      <label for="changeType">
+        What should be changed?
+        <select id="changeType" name="changeType" required>
+          <option value="Correct existing information">Correct existing information</option>
+          <option value="Add new information">Add new information</option>
+          <option value="Remove an incorrect record">Remove an incorrect record</option>
+          <option value="Other suggestion">Other suggestion</option>
+        </select>
+      </label>
+
+      <label for="message">
+        Describe the requested change
+        <textarea
+          id="message"
+          name="message"
+          required
+          placeholder="Explain what should be changed and why..."
+        ></textarea>
+      </label>
+
+      <label for="senderEmail">
+        Your email (optional)
+        <input
+          id="senderEmail"
+          name="senderEmail"
+          type="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+        >
+      </label>
+
+      <label for="source">
+        Evidence or source link (optional)
+        <input
+          id="source"
+          name="source"
+          type="url"
+          placeholder="https://..."
+        >
+      </label>
+
+      <div class="request-actions">
+        <button class="button" type="submit">
+          Submit change request
+        </button>
+      </div>
+
+      <p class="notice">
+        Your change request will be submitted via Formspree.
+        Please check that all details are correct before submitting.
+      </p>
+    </form>
+  </section>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+
+  const fleetInput = document.getElementById("fleetNumber");
+  const categoryInput = document.getElementById("currentCategory");
+  const form = document.getElementById("requestForm");
+  const senderEmail = document.getElementById("senderEmail");
+  const replyTo = document.getElementById("replyTo");
+  const backLink = document.getElementById("backToDatabase");
+
+  // Fill in the selected vehicle from the URL parameters.
+  fleetInput.value = params.get("fleet") || "";
+  categoryInput.value = params.get("category") || "";
+
+  // Require a vehicle to be selected before submitting.
+  if (!fleetInput.value.trim()) {
+    fleetInput.setCustomValidity(
+      "Please open this form using a vehicle's Request a change link."
+    );
+  }
+
+  // Return to the previous database page when appropriate.
+  backLink.addEventListener("click", function (event) {
+    try {
+      const referrer = document.referrer;
+
+      if (!referrer) return;
+
+      const previousURL = new URL(referrer);
+      const sameSite = previousURL.origin === window.location.origin;
+      const cameFromDatabase =
+        sameSite &&
+        (
+          previousURL.pathname.endsWith("/index.html") ||
+          previousURL.pathname.endsWith("/")
+        );
+
+      if (cameFromDatabase && window.history.length > 1) {
+        event.preventDefault();
+        window.history.back();
+      }
+    } catch (error) {
+      // Keep the normal database link if the referrer cannot be checked.
+    }
+  });
+
+  // Use the optional email address as the reply-to address.
+  form.addEventListener("submit", function () {
+    replyTo.value = senderEmail.value.trim();
+  });
+});
+</script>
+
+</body>
+</html>
