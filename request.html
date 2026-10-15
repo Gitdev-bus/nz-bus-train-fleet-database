@@ -7,56 +7,32 @@
 
   <title>Request a Fleet Record Change | NZ Bus &amp; Train Fleet Database</title>
 
-  <meta
-    name="description"
-    content="Submit a change request for a bus or train record in the NZ Bus & Train Fleet Database."
-  >
+  <meta name="description" content="Submit a change request for a bus or train record in the NZ Bus &amp; Train Fleet Database.">
   <meta name="author" content="Christian Yeung">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0b1f33">
 
-  <!-- Main website URL -->
-  <link
-    rel="canonical"
-    href="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/request.html"
-  >
+  <link rel="canonical" href="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/request.html">
 
-  <!-- Website favicon -->
-  <link rel="icon" type="image/png" sizes="512x512"
-    href="./nzbustfd-logo-512.png?v=5">
-  <link rel="shortcut icon" type="image/png"
-    href="./nzbustfd-logo-512.png?v=5">
-  <link rel="apple-touch-icon"
-    href="./nzbustfd-logo-512.png?v=5">
+  <link rel="icon" type="image/png" sizes="512x512" href="./nzbustfd-logo-512.png?v=5">
+  <link rel="shortcut icon" type="image/png" href="./nzbustfd-logo-512.png?v=5">
+  <link rel="apple-touch-icon" href="./nzbustfd-logo-512.png?v=5">
 
-  <!-- Social media sharing preview -->
   <meta property="og:type" content="website">
-  <meta property="og:site_name"
-    content="NZ Bus &amp; Train Fleet Database">
-  <meta property="og:title"
-    content="Request a Fleet Record Change | NZ Bus &amp; Train Fleet Database">
-  <meta property="og:description"
-    content="Submit corrections and updates to New Zealand bus and train fleet records.">
-  <meta property="og:url"
-    content="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/request.html">
-  <meta property="og:image"
-    content="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/nzbustfd-logo-512.png">
-  <meta property="og:image:alt"
-    content="NZ Bus &amp; Train Fleet Database logo">
+  <meta property="og:site_name" content="NZ Bus &amp; Train Fleet Database">
+  <meta property="og:title" content="Request a Fleet Record Change | NZ Bus &amp; Train Fleet Database">
+  <meta property="og:description" content="Submit corrections and updates to New Zealand bus and train fleet records.">
+  <meta property="og:url" content="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/request.html">
+  <meta property="og:image" content="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/nzbustfd-logo-512.png">
+  <meta property="og:image:alt" content="NZ Bus &amp; Train Fleet Database logo">
 
-  <!-- Twitter / X sharing preview -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title"
-    content="Request a Fleet Record Change | NZ Bus &amp; Train Fleet Database">
-  <meta name="twitter:description"
-    content="Submit a change request for a bus or train fleet record.">
-  <meta name="twitter:image"
-    content="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/nzbustfd-logo-512.png">
+  <meta name="twitter:title" content="Request a Fleet Record Change | NZ Bus &amp; Train Fleet Database">
+  <meta name="twitter:description" content="Submit a change request for a bus or train fleet record.">
+  <meta name="twitter:image" content="https://gitdev-bus.github.io/nzbustrainfleetdatabase.co.nz/nzbustfd-logo-512.png">
 
-  <!-- Main stylesheet -->
   <link rel="stylesheet" href="./style.css">
 
-  <!-- Request page styling -->
   <style>
     .request-shell {
       max-width: 820px;
@@ -133,6 +109,11 @@
       opacity: .9;
     }
 
+    .request-form .button:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
     .back-link {
       display: inline-block;
       margin-bottom: 24px;
@@ -153,6 +134,19 @@
       gap: 12px;
       align-items: center;
       flex-wrap: wrap;
+    }
+
+    #verificationStatus {
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    #verificationStatus[data-state="success"] {
+      color: #166534;
+    }
+
+    #verificationStatus[data-state="error"] {
+      color: #b91c1c;
     }
   </style>
 </head>
@@ -233,6 +227,7 @@
           id="currentCategory"
           name="category"
           readonly
+          required
         >
       </label>
 
@@ -277,9 +272,13 @@
         >
       </label>
 
+      <p id="verificationStatus" role="status" aria-live="polite">
+        Checking vehicle details...
+      </p>
+
       <div class="request-actions">
-        <button class="button" type="submit">
-          Submit change request
+        <button class="button" id="submitButton" type="submit" disabled>
+          Checking vehicle...
         </button>
       </div>
 
@@ -291,16 +290,144 @@
   </section>
 </main>
 
-
 <script>
-const params = new URLSearchParams(window.location.search);
+document.addEventListener("DOMContentLoaded", async function () {
+  const params = new URLSearchParams(window.location.search);
 
-document.getElementById("fleetNumber").value =
-  params.get("fleet") || "URL PARAMETER MISSING";
+  const fleetInput = document.getElementById("fleetNumber");
+  const categoryInput = document.getElementById("currentCategory");
+  const form = document.getElementById("requestForm");
+  const senderEmail = document.getElementById("senderEmail");
+  const replyTo = document.getElementById("replyTo");
+  const submitButton = document.getElementById("submitButton");
+  const status = document.getElementById("verificationStatus");
+  const backLink = document.getElementById("backToDatabase");
 
-document.getElementById("currentCategory").value =
-  params.get("category") || "URL PARAMETER MISSING";
+  const requestedFleet = (params.get("fleet") || "").trim();
+  const requestedCategory = (params.get("category") || "").trim();
+
+  fleetInput.value = requestedFleet;
+  categoryInput.value = requestedCategory;
+
+  fleetInput.readOnly = true;
+  categoryInput.readOnly = true;
+
+  function setStatus(message, state) {
+    status.textContent = message;
+    status.dataset.state = state;
+  }
+
+  function blockSubmission(message) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Vehicle could not be verified";
+    setStatus(message, "error");
+  }
+
+  // Do not accept a request without both URL parameters.
+  if (!requestedFleet || !requestedCategory) {
+    blockSubmission(
+      "Open this form using the Change request link on a vehicle record."
+    );
+    return;
+  }
+
+  try {
+    // Fetch the published homepage.
+    const response = await fetch("./", { cache: "no-store" });
+
+    if (!response.ok) {
+      throw new Error("Homepage could not be loaded.");
+    }
+
+    const pageHTML = await response.text();
+
+    // Read the fleet records from the homepage's records array.
+    const match = pageHTML.match(
+      /(?:const|let|var)\s+records\s*=\s*(\[[\s\S]*?\])\s*;/
+    );
+
+    if (!match) {
+      throw new Error(
+        "The fleet records could not be located. The database format may need a different reader."
+      );
+    }
+
+    // This expects the records array to be valid JSON.
+    const records = JSON.parse(match[1]);
+
+    const record = records.find(function (item) {
+      return String(item.fleet).trim().toLowerCase() ===
+        requestedFleet.toLowerCase();
+    });
+
+    if (!record) {
+      blockSubmission(
+        "This fleet number was not found in the database. Please return to the database and select a vehicle."
+      );
+      return;
+    }
+
+    if (
+      String(record.category).trim() !== requestedCategory
+    ) {
+      blockSubmission(
+        "The category does not match this vehicle's database record. Please reopen the request from the correct vehicle."
+      );
+      return;
+    }
+
+    // The fleet number and category match the published database.
+    setStatus("Vehicle details match the published database.", "success");
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit change request";
+
+  } catch (error) {
+    console.error("Vehicle verification failed:", error);
+
+    blockSubmission(
+      "The vehicle could not be verified. Please try again later or return to the fleet database."
+    );
+  }
+
+  form.addEventListener("submit", function (event) {
+    // Recheck the visible values before allowing the normal form submission.
+    if (
+      fleetInput.value.trim() !== requestedFleet ||
+      categoryInput.value.trim() !== requestedCategory ||
+      submitButton.disabled
+    ) {
+      event.preventDefault();
+      blockSubmission(
+        "The selected vehicle details have changed. Please reopen the form from the database."
+      );
+      return;
+    }
+
+    replyTo.value = senderEmail.value.trim();
+  });
+
+  // Keep the normal back link unless the previous page is this site's homepage.
+  backLink.addEventListener("click", function (event) {
+    try {
+      const previousURL = new URL(document.referrer);
+
+      if (
+        previousURL.origin === window.location.origin &&
+        (
+          previousURL.pathname.endsWith("/index.html") ||
+          previousURL.pathname.endsWith("/")
+        ) &&
+        window.history.length > 1
+      ) {
+        event.preventDefault();
+        window.history.back();
+      }
+    } catch (error) {
+      // The normal database link remains available.
+    }
+  });
+});
 </script>
+
 </body>
 </html>
-
