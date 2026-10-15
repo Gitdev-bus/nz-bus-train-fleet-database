@@ -583,16 +583,19 @@ function render() {
                  r.category.includes("Livery") ? "LIVERY" : "RECORD";
 
     return `<article class="record">
-      <div class="fleet">${r.fleet}</div>
-      <div class="record-main">
-        <h3>${r.category}</h3>
-        ${r.detail ? `<p>${r.detail}</p>` : ""}
-      </div>
-      <div class="record-actions">
-        <span class="tag">${type}</span>
-        <a class="change-request" href="request.html?fleet=${encodeURIComponent(r.fleet)}&category=${encodeURIComponent(r.category)}">✉ Change request</a>
-      </div>
-    </article>`;
+  <div class="fleet">${r.fleet}</div>
+  <div class="record-main">
+    <h3>${r.category}</h3>
+    ${r.detail ? `<p>${r.detail}</p>` : ""}
+  </div>
+  <div class="record-actions">
+    <span class="tag">${type}</span>
+    <a class="change-request"
+       href="./request.html?fleet=${encodeURIComponent(r.fleet)}&category=${encodeURIComponent(r.category)}">
+      ✉ Change request
+    </a>
+  </div>
+</article>`;
   }).join("");
 
   noResults.hidden = filtered.length !== 0;
