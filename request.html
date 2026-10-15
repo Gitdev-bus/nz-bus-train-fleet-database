@@ -291,120 +291,16 @@
   </section>
 </main>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
-
-  const fleetInput = document.getElementById("fleetNumber");
-  const categoryInput = document.getElementById("currentCategory");
-  const form = document.getElementById("requestForm");
-  const senderEmail = document.getElementById("senderEmail");
-  const replyTo = document.getElementById("replyTo");
-  const backLink = document.getElementById("backToDatabase");
-
-  // Fill in the selected vehicle from the URL parameters.
-  fleetInput.value = params.get("fleet") || "";
-  categoryInput.value = params.get("category") || "";
-
-  // Require a vehicle to be selected before submitting.
-  if (!fleetInput.value.trim()) {
-    fleetInput.setCustomValidity(
-      "Please open this form using a vehicle's Request a change link."
-    );
-  }
-
-  // Return to the previous database page when appropriate.
-  backLink.addEventListener("click", function (event) {
-    try {
-      const referrer = document.referrer;
-
-      if (!referrer) return;
-
-      const previousURL = new URL(referrer);
-      const sameSite = previousURL.origin === window.location.origin;
-      const cameFromDatabase =
-        sameSite &&
-        (
-          previousURL.pathname.endsWith("/index.html") ||
-          previousURL.pathname.endsWith("/")
-        );
-
-      if (cameFromDatabase && window.history.length > 1) {
-        event.preventDefault();
-        window.history.back();
-      }
-    } catch (error) {
-      // Keep the normal database link if the referrer cannot be checked.
-    }
-  });
-
-  // Use the optional email address as the reply-to address.
-  form.addEventListener("submit", function () {
-    replyTo.value = senderEmail.value.trim();
-  });
-});
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
 
-  const fleetInput = document.getElementById("fleetNumber");
-  const categoryInput = document.getElementById("currentCategory");
-  const form = document.getElementById("requestForm");
-  const senderEmail = document.getElementById("senderEmail");
-  const replyTo = document.getElementById("replyTo");
-  const backLink = document.getElementById("backToDatabase");
+document.getElementById("fleetNumber").value =
+  params.get("fleet") || "URL PARAMETER MISSING";
 
-  // Read the selected vehicle from the link.
-  const fleet = (params.get("fleet") || "").trim();
-  const category = (params.get("category") || "").trim();
-
-  // Automatically fill in the selected vehicle.
-  fleetInput.value = fleet;
-  categoryInput.value = category;
-
-  // Clear any old validation message.
-  fleetInput.setCustomValidity("");
-
-  // Require a fleet number before allowing submission.
-  if (!fleet) {
-    fleetInput.setCustomValidity(
-      "Please open this form using a vehicle's Request a change link."
-    );
-
-    fleetInput.addEventListener("invalid", function () {
-      fleetInput.setCustomValidity(
-        "Please open this form using a vehicle's Request a change link."
-      );
-    });
-  }
-
-  // If the user arrived from the database, allow them to go back.
-  backLink.addEventListener("click", function (event) {
-    try {
-      const previousURL = new URL(document.referrer);
-
-      const sameSite =
-        previousURL.origin === window.location.origin;
-
-      const databasePage =
-        previousURL.pathname.endsWith("/index.html") ||
-        previousURL.pathname.endsWith("/");
-
-      if (sameSite && databasePage && window.history.length > 1) {
-        event.preventDefault();
-        window.history.back();
-      }
-    } catch (error) {
-      // Use the normal database link if the previous page is unavailable.
-    }
-  });
-
-  // Include the optional email address as the reply-to field.
-  form.addEventListener("submit", function () {
-    replyTo.value = senderEmail.value.trim();
-  });
-});
+document.getElementById("currentCategory").value =
+  params.get("category") || "URL PARAMETER MISSING";
 </script>
 </body>
 </html>
+
